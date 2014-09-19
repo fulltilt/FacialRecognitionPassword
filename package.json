@@ -1,0 +1,11 @@
+{
+  "name": "test",
+  "version": "0.0.1",
+  "dependencies": {
+    "express": "4.8.x"
+  },
+  "engines": {
+    "node": "0.8.x",
+    "npm": "1.4.x"
+  }
+}
