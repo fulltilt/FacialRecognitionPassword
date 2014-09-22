@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Facial Recognition Password</title>
+  <title>Facial Recognition Password</title>
   <script src="jquery-2.1.1.min.js"></script>
   <script src="photobooth_min.js"></script>
-  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
   
-  <script>
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+  <!--
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+  -->
+  <script>  
     $(document).ready(function() {
       var file = null;
       $('#photo').photobooth().on("image", function(event, dataUrl) {
@@ -19,7 +21,7 @@
       });
     });
 
-    funciton dataURLtoBlob(dataUrl) {
+    function dataURLtoBlob(dataUrl) {
       // Decode the dataURL
       var binary = atob(dataUrl.split(',')[1]);
 
@@ -31,7 +33,7 @@
 
       // Return our Blob object
       return new Blob([new Uint8Array(array)], {
-        type: 'image/png';
+        type: 'image/png'
       });
     }
 
@@ -55,7 +57,7 @@
         contentType: false,
         beforeSend: function (xhr) {
           //xhr.setRequestHeader('X-Mashape-Authorization', $('#mashapeKey').val());
-          xhr.setRequestHeader('X-Mashape-Authorization', 'cOd8rQKl8tmshvAnHJj9OD1mh901p1Bbjx2jsn0wVeS5BOhtPE';
+          xhr.setRequestHeader('X-Mashape-Authorization', 'cOd8rQKl8tmshvAnHJj9OD1mh901p1Bbjx2jsn0wVeS5BOhtPE');
         }
       }).done(function (result) {
           alert('Received response...');
@@ -83,11 +85,11 @@
 </head>
 <body>
 
+<!--  
   <div class="container">
     <div class="col-sm-6 col-sm-offset-3">
       <h1><span class="fa fa-sign-in"></span> Facial Recognition Tester</h1>
 
-      <!-- LOGIN FORM -->
       <form action="/login" method="post">
         <div class="form-group">
           <label>User Name</label>
@@ -100,6 +102,7 @@
       <hr>
     </div>
   </div>  
+-->
 
   <div id="wrapper">
     <div id="photo"></div>
