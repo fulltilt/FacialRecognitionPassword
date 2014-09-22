@@ -4,15 +4,68 @@
 	<title>Facial Recognition Password</title>
   <script src="jquery-2.1.1.min.js"></script>
   <script src="photobooth_min.js"></script>
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+  
   <script>
-    $(function() {
-      $('#example').photobooth().on("image",function( event, dataUrl ){
+    $(document).ready(function() {
+      var file = null;
+      $('#photo').photobooth().on("image", function(event, dataUrl) {
+        file = dataURLtoBlob(dataUrl);
+        var size = file.size;
+        console.log('Picture size: ' + size);
+        uploadImage(file);
         $( "#gallery" ).append( '<img src="' + dataUrl + '" >');
       });
     });
+
+    funciton dataURLtoBlob(dataUrl) {
+      // Decode the dataURL
+      var binary = atob(dataUrl.split(',')[1]);
+
+      // Create 8-bit unsigned array
+      var array = [];
+      for (var i = 0; i < binary.length; i++) {
+        array.push(binary.charCodeAt(i));
+      }
+
+      // Return our Blob object
+      return new Blob([new Uint8Array(array)], {
+        type: 'image/png';
+      });
+    }
+
+    function uploadImage(file) {
+      var fd = new FormData();
+
+      // Append our Canvas image file to the form data
+      fd.append('files', file);
+      //fd.append('album', $('#album').val()); FacesPassword
+      //fd.append('albumkey', $('#albumkey').val()); 40c82c02982df3f96d47a8e986406f6790cc1145cd7125d9da70e2971a909677
+      fd.append('album', 'FacesPassword');
+      fd.append('albumkey', '40c82c02982df3f96d47a8e986406f6790cc1145cd7125d9da70e2971a909677');
+
+
+      // Send it
+      $.ajax({
+        url: 'https://lambda-face-recognition.p.mashape.com/recognize',
+        type: 'POST',
+        data: fd,
+        processData: false,
+        contentType: false,
+        beforeSend: function (xhr) {
+          //xhr.setRequestHeader('X-Mashape-Authorization', $('#mashapeKey').val());
+          xhr.setRequestHeader('X-Mashape-Authorization', 'cOd8rQKl8tmshvAnHJj9OD1mh901p1Bbjx2jsn0wVeS5BOhtPE';
+        }
+      }).done(function (result) {
+          alert('Received response...');
+          var resultObject = JSON.stringify(result);
+          alert(resultObject);
+      });
+    }
   </script>
   <style>
-    #example {
+    #photo {
       height: 300px;
     }
 
@@ -29,9 +82,29 @@
 </style>
 </head>
 <body>
+
+  <div class="container">
+    <div class="col-sm-6 col-sm-offset-3">
+      <h1><span class="fa fa-sign-in"></span> Facial Recognition Tester</h1>
+
+      <!-- LOGIN FORM -->
+      <form action="/login" method="post">
+        <div class="form-group">
+          <label>User Name</label>
+          <input type="text" class="form-control" name="user">
+        </div>
+
+        <button type="submit" class="btn btn-warning btn-lg">Create New Account</button>
+      </form>
+
+      <hr>
+    </div>
+  </div>  
+
   <div id="wrapper">
-    <div id="example"></div>
+    <div id="photo"></div>
     <div id="gallery"></div>
   </div>
+
 </body>
 </html>
